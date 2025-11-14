@@ -1,0 +1,44 @@
+{% if page_obj.has_other_pages %}
+  <nav class="my-5">
+    <ul class="pagination">
+
+      <!-- Если существует предыдущая страница -->
+      {% if page_obj.has_previous %}
+        <!-- Кнопка "Первая страница" -->
+        <li class="page-item">
+          <a class="page-link" href="?page=1{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">
+            &laquo;
+          </a>
+        </li>
+      {% endif %}
+
+      <!-- Перебираем в цикле все номера страниц -->
+      {% for i in page_obj.paginator.page_range %}
+        <!-- Если номер страницы совпадает с i... -->
+        {% if page_obj.number == i %}
+          <!-- ..."подсвечиваем" кнопку -->
+          <li class="page-item active">
+            <span class="page-link">{{ i }}</span>
+          </li>
+        {% else %}
+          <!-- Остальные кнопки отрисовываем без подсветки, со ссылками -->
+          <li class="page-item">
+            <a class="page-link" href="?page={{ i }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">
+              {{ i }}
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
+
+      <!-- Если существует следующая страница -->
+      {% if page_obj.has_next %}
+        <!-- Кнопка "Последняя страница" -->
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">
+            &raquo;
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}
